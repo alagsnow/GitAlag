@@ -24,3 +24,16 @@ HEAD is now at 3628164 append GPL
 git reflog 查看commit id
 
 git log 查看版本历史
+
+6. git checkout -- file  撤销文件再工作区的修改；1是修改后还没有commit 此时会退到和版本库里面一样；2. add后又修改，此时回到add的状态；
+git checkout -- file命令中的--很重要，没有--，就变成了“切换到另一个分支”的命令，我们在后面的分支管理中会再次遇到git checkout命令。
+
+7. git reset HEAD readme.txt   撤销在暂存区修改的内容，重新放回到工作区；
+
+场景1：当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令git checkout -- file。
+
+场景2：当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，分两步，第一步用命令git reset HEAD file，就回到了场景1，第二步按场景1操作。
+
+场景3：已经提交了不合适的修改到版本库时，想要撤销本次提交，参考版本回退一节，不过前提是没有推送到远程库。
+
+8. there is something wrong;
