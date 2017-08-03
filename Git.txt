@@ -22,3 +22,5 @@ $ git reset --hard 3628164
 HEAD is now at 3628164 append GPL
 
 git reflog 查看commit id
+
+git log 查看版本历史
