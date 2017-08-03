@@ -12,3 +12,4 @@ git commit -m "提交内容备注"
 4. git diff git.txt  查看txt这个文件有什么变化
 
 每次修改后，都要先add,再commit；
+5. the massage is use to call back;
