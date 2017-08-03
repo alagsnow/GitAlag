@@ -1,0 +1,3 @@
+git´´½¨Ô¶³Ì²Ö¿âÃüÁî£º
+git init 
+Initialized empty Git repository in /Users/michael/learngit/.git/
