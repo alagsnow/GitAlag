@@ -1,3 +1,10 @@
-git创建远程仓库命令：
+1. git创建远程仓库命令：
 git init 
 Initialized empty Git repository in /Users/michael/learngit/.git/
+
+2. 添加文件到git仓库，提交
+git add    先把文件放到仓库文件夹；
+git commit -m "提交内容备注"
+
+3. git status
+查看仓库状态；
