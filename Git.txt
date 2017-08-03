@@ -12,4 +12,13 @@ git commit -m "提交内容备注"
 4. git diff git.txt  查看txt这个文件有什么变化
 
 每次修改后，都要先add,再commit；
-5. the massage is use to call back;
+5. git reset --hard HEAD^  回退版本 HEAD表示当前版本，HEAD^上个版本 HEAD^^上上个版本，回退到前100个版本HEAD~100；
+
+好比你从21世纪坐时光穿梭机来到了19世纪，想再回去已经回不去了，肿么办？
+
+办法其实还是有的，只要上面的命令行窗口还没有被关掉，你就可以顺着往上找啊找啊，找到那个append GPL的commit id是3628164...，于是就可以指定回到未来的某个版本：
+
+$ git reset --hard 3628164
+HEAD is now at 3628164 append GPL
+
+git reflog 查看commit id
