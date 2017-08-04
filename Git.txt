@@ -63,3 +63,6 @@ git checkout -b alagxue   -b表示创建并切换分支；
 git branch 查看当前分支
 
 git checkout  master   checkout用来切换分支
+
+切到主分支，然后git merge dev alagxue 把分支的修改合并到主干；
+删除分支alagxue
