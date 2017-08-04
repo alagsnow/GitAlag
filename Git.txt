@@ -60,3 +60,6 @@ git clone  https://github.com/alagsnow/alagsnow.git
 
 11. git 分支：
 git checkout -b alagxue   -b表示创建并切换分支；
+git branch 查看当前分支
+
+git checkout  master   checkout用来切换分支
