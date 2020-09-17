@@ -1,0 +1,21 @@
+生成唯一ID
+"store_id":"${store_id}_${__time()}",
+
+参数跨进程：
+beanshell后置处理器：
+${__setProperty(reqactivitySeqShelve04,${activitySeqShelve04},)};
+通过参数获取跨进程数据：
+"promotion_code":"${__property(reqpromotion_code1)}"
+通过beanshell获取：
+String test ="${__property(reqstoreIdShelve02)}";
+
+vars.put 没有跨进程，想要跨进程，同样把字段放入beanshell处理器里面；
+
+查询数据库相关
+1. 查询数据库中是否有重复字段
+SELECT COUNT(activity_seq)  from promotion_activity where app_id ="${app_id}"  group by activity_seq having COUNT(activity_seq) >1
+
+2.查询时间段内数据总数：格式化显示时间
+select COUNT(promotion_code)  from promotion_code WHERE store_id ="${store_id}"  and app_id = "AurogonTest"
+and (start_date >= "${__timeShift(yyyy-MM-dd HH:mm:ss,,P9D,,)}"  or start_date is NULL )
+and (end_date<="${__timeShift(yyyy-MM-dd HH:mm:ss,,P21D,,)}" or end_date is NULL)

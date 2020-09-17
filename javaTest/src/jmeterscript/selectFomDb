@@ -1,0 +1,55 @@
+import java.io.IOException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import common.DBSUtil;
+import common.Row;
+import common.ProductSeqHashCode;
+import java.util.ArrayList;
+import java.util.List;
+
+String jsonContent = prev.getResponseDataAsString();
+JSONObject response = new JSONObject(jsonContent);
+String code = response.get("code").toString();
+
+//log.info("=========code============"+code);
+
+String promotionSeq = vars.get("promotioncreateSeqLock00");
+
+//log.info("=========promotionSeq============"+promotionSeq);
+
+if (code.equals("SUCCESS")) {
+
+
+String promotionSql = "select lock_num ,acquire_num from  promotion_code  where promotion_seq = ? ";
+log.info("promotionSql------------"+promotionSql);
+
+   List listSpu = DBSUtil.query("sale",promotionSql, new Object[]{promotionSeq});
+
+   Row rSpu = listSpu.get(0);
+   //log.info("*******rSpu*****"+rSpu);
+
+   int lockNum = rSpu.getInt("lock_num");
+   int acquireNum = rSpu.getInt("acquire_num");
+
+
+   log.info("lockNum-------第一次------*******"+lockNum);
+   log.info("acquireNum------第一次-------*******"+acquireNum);
+
+
+   if (lockNum == 1){
+   		 log.info("锁定成功---------");
+		 Failure = false;
+   }else{
+   		//把断言失败置为真，即用例失败，并在结果树中显示FailureMessage
+	   Failure = true;
+	   FailureMessage = "没有正常锁定";
+
+   	}
+}else{
+   		//把断言失败置为真，即用例失败，并在结果树中显示FailureMessage
+	    Failure = true;
+	    FailureMessage = "请求结果不正确";
+
+
+   	}

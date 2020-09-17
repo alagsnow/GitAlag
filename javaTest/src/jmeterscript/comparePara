@@ -1,0 +1,68 @@
+import java.io.IOException;
+import cn.hutool.core.io.file.FileReader;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import com.jayway.jsonpath.JsonPath;
+import org.skyscreamer.jsonassert.JSONCompare;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+import org.skyscreamer.jsonassert.JSONCompareResult;
+import common.JsonCompare;
+
+String jsonContent = prev.getResponseDataAsString();
+JSONObject response = new JSONObject(jsonContent);
+String code = response.get("code").toString();
+
+String activitySeq = response.get("data").getString("activity_seq").toString();
+
+//指定跳过不匹配的字段
+String[] excudes= new String[8];
+excudes[0]="$..channel";
+excudes[1]="$..timestamp";
+excudes[2]="$..sign";
+excudes[3]="$..nonce";
+excudes[4]="$..create_time";
+excudes[5]="$..update_time";
+excudes[6]="$..start_time";
+excudes[7]="$..end_time";
+
+//从文件读取预期值
+String filePath="/Users/ella/Documents/jmeterCompare/saleActivities/getActivityDetail.json";
+
+
+//默认UTF-8编码，可以在构造中传入第二个参数做为编码
+FileReader fileReader = new FileReader(filePath);
+
+//读取文件，替换${}为具体的值
+String expectResult = fileReader.readString();
+
+expectResult = expectResult.replace("【templateId】", vars.get("template_id"));
+expectResult = expectResult.replace("【resourceId】", vars.get("resource_id"));
+expectResult = expectResult.replace("【appid】", vars.get("app_id"));
+expectResult = expectResult.replace("【storeid】", vars.get("storeIdGet01"));
+expectResult = expectResult.replace("【activitySeq】", activitySeq);
+
+log.info("=======读取的期望值为:=====》 " + expectResult);
+
+if (code.equals("SUCCESS") ) {
+    try {
+
+	  // JSONCompareResult same = JsonCompare.compare(jsonContent, expectResult, excudes);
+	   JSONCompareResult same =  JsonCompare.compare(jsonContent, expectResult, excudes);
+	   if(same!=null && !same.passed()){
+	   		log.info("=======对比结果为:=====》 " + same);
+	   		//把断言失败置为真，即用例失败，并在结果树中显示FailureMessage
+			Failure = true;
+	    		FailureMessage = "返回的值与预期不一致：" + same.getMessage();
+
+	   	}
+	} catch (Exception e) {
+		log.info("------------#######33"+e.getMessage()+"   ");
+	      e.printStackTrace();
+	}
+}else{
+	//把断言失败置为真，即用例失败，并在结果树中显示FailureMessage
+    Failure = true;
+    FailureMessage = "请求查询接口失败";
+}
+

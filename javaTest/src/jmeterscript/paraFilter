@@ -1,0 +1,35 @@
+//从响应代码里面全文匹配，字段内容
+
+String dataRes = prev.getResponseDataAsString();
+   int amountNum = 0;
+   if(dataRes != null ){
+     dataRes =dataRes.replace("\\","");
+       if(dataRes.contains("name=\"amount\"")) {
+            String[] split = dataRes.split("name=\"amount\"");
+            if(split.length > 1){
+                String[] values = split[1].split("\"");
+                if(values.length>1){
+                    vars.put("amount211",values[1]);
+                    String amount = values[1];
+                   amountNum = Integer.parseInt(amount);
+                }
+            }else{
+                vars.put("amount","error 3");}
+        }else{
+            vars.put("amount","error 1");
+        }
+    }else{
+        vars.put("amount","error 2");
+    }
+
+
+
+   //断言是否有值，有值则说明落库成功，断言通过
+   if (amountNum== 1056){
+   		Failure = false;
+   }else{
+   		//把断言失败置为真，即用例失败，并在结果树中显示FailureMessage
+	    Failure = true;
+	    FailureMessage = "商品价格不对";
+   	}
+//}

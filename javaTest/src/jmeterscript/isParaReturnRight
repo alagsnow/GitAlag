@@ -1,0 +1,43 @@
+import java.io.IOException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import common.DBSUtil;
+import common.Row;
+import common.ProductSeqHashCode;
+import java.util.ArrayList;
+import java.util.List;
+
+//用来判断返回的数据是否包含指定值
+
+String jsonContent = prev.getResponseDataAsString();
+JSONObject response = new JSONObject(jsonContent);
+String code = response.get("code").toString();
+log.info("code--------------: "+code);
+
+String promotionSeq = vars.get("promotionSeqSuitList01");
+log.info("promotionSeq-------------------------"+promotionSeq);
+
+JSONArray promotionCodeList = response.getJSONObject("data").getJSONArray("suitable_promotion_code_infos");
+log.info("promotionCodeList-------------------------"+promotionCodeList);
+
+int len = promotionCodeList.length();
+log.info("len-------------------------"+len);
+
+ if (code.equals("SUCCESS")) {
+            if (len >= 1) {
+                for (int i; i < len; i++) {
+                    String promotionGetOne = promotionCodeList.get(i).get("promotion_seq").toString();
+                    log.info("promotionGetOne-------------------------" + promotionGetOne);
+
+                    if (promotionGetOne.equals(promotionSeq)) {
+                        log.info("okokokokokok-------------------------" + promotionGetOne);
+                        Failure = false;
+                        break;
+                    } else {
+                        Failure = true;
+                        FailureMessage = "没有匹配创建的结果 ";
+                    }
+                }
+            }
+        }

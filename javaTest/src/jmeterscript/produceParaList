@@ -1,0 +1,36 @@
+import org.apache.jmeter.config.Arguments;
+import java.util.Map.Entry;
+import java.io.IOException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import common.DBSUtil;
+import common.Row;
+import common.ProductSeqHashCode;
+import java.util.ArrayList;
+import java.util.List;
+
+//主要用来入参类型是数组时，生产多个list
+
+        int seq = 0;
+        JSONArray result = new JSONArray();
+        for (int i = 0; i < 501; i++) {
+
+            seq += 1;
+            //sku和spu默认值
+            String SKU = "SKUlvyx" + seq;
+            String SPU = "SPUlvyx"+ seq;
+
+            JSONObject temp = new JSONObject();
+
+            //入参数组包含的字段
+            temp.put("spu_seq", SKU);
+            temp.put("sku_seq", SPU);
+            temp.put("category_id", "");
+            temp.put("label_id", "");
+
+            result.put(temp);
+
+        }
+
+        vars.put("effectScopeValueList",result.toString());

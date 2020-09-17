@@ -1,0 +1,24 @@
+import org.apache.jmeter.config.Arguments;
+import java.util.Map.Entry;
+
+import java.io.IOException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import common.DBSUtil;
+import common.Row;
+import common.ProductSeqHashCode;
+import java.util.ArrayList;
+import java.util.List;
+
+//获取http请求参数
+
+Arguments args = sampler.getArguments();
+String body = args.getArgument(0).getValue();
+//返回json结构
+JSONObject request = new JSONObject(body);
+
+//获取请求参数的storeid
+String storeId = request.getJSONObject("data").getString("store_id");
+log.info("storeId-------------------------"+storeId);
+vars.put("storeIdCreateP032",storeId);

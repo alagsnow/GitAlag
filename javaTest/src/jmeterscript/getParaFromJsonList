@@ -1,0 +1,63 @@
+import java.io.IOException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import common.DBSUtil;
+import common.Row;
+import common.ProductSeqHashCode;
+import java.util.ArrayList;
+import java.util.List;
+
+//从多层json和数组中获取数据
+
+String jsonContent = prev.getResponseDataAsString();
+JSONObject response = new JSONObject(jsonContent);
+String code = response.get("code").toString();
+log.info("code--------------: "+code);
+
+JSONArray promotionCodeList = response.getJSONObject("data").getJSONArray("promotionCodeAmountGroups");
+log.info("promotionCodeList-------------------------"+promotionCodeList);
+
+//获取promotionCodeAmountGroups数组
+JSONObject promotionCodeJson = promotionCodeList.getJSONObject(0);
+log.info("promotionCodeJson-------------------------"+promotionCodeJson);
+
+JSONArray availableList = promotionCodeJson.getJSONArray("availablePromotionCodes");
+log.info("availableList-------------------------"+availableList);
+
+//get availableList len
+int len = availableList.length();
+log.info("len-------------------------"+len);
+
+
+JSONObject availableJson = availableList.getJSONObject(0);
+log.info("availableJson-------------------------"+availableJson);
+
+//获取价格
+String reducePrice = availableJson.getString("reducePrice").toString();
+log.info("reducePrice-------------------------"+reducePrice);
+
+
+//获取口令详情
+String currency = availableJson.getJSONObject("promotionCodeDetail").getString("currency").toString();
+log.info("currency-------------------------"+currency);
+
+
+if (code.equals("SUCCESS") && len == 1 ) {
+
+
+		log.info("成功了 : "+len);
+		if (Integer.parseInt(reducePrice) ==226 ){
+			log.info("price right : ");
+		}
+		else{
+	Failure = true;
+     FailureMessage = "price wrong: ";
+}
+
+
+
+}else{
+	Failure = true;
+     FailureMessage = "返回的数据!=4";
+}

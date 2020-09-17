@@ -1,0 +1,115 @@
+import java.io.IOException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import common.DBSUtil;
+import common.Row;
+import common.ProductSeqHashCode;
+import java.util.ArrayList;
+import java.util.List;
+
+//从多层json和数组中获取数据，比较麻烦一些，需要判断多个数组
+
+String jsonContent = prev.getResponseDataAsString();
+JSONObject response = new JSONObject(jsonContent);
+String code = response.get("code").toString();
+log.info("code--------------: "+code);
+
+JSONArray promotionCodeList = response.getJSONObject("data").getJSONArray("promotionCodeAmountGroups");
+log.info("promotionCodeList-------------------------"+promotionCodeList);
+
+String dataPrice = response.getJSONObject("data").getString("reducePrice").toString();
+log.info("dataPrice-------------------------"+dataPrice);
+
+//获取promotionCodeAmountGroups数组，第一个数组
+JSONObject promotionCodeJson1 = promotionCodeList.getJSONObject(0);
+log.info("promotionCodeJson1-------------------------"+promotionCodeJson1);
+
+JSONArray availableList1 = promotionCodeJson1.getJSONArray("availablePromotionCodes");
+log.info("availableList1-------------------------"+availableList1);
+
+//get availableList len
+int len1 = availableList1.length();
+log.info("len1-------------------------"+len1);
+
+
+if (code.equals("SUCCESS") && len1 == 1) {
+
+JSONObject availableJson1 = availableList1.getJSONObject(0);
+log.info("availableJson1-------------------------"+availableJson1);
+
+//获取价格
+String reducePrice1 = availableJson1.getString("reducePrice").toString();
+log.info("reducePrice1-------------------------"+reducePrice1);
+
+//JSONObject unavailableJson1 = unavailableList1.getJSONObject(0);
+//log.info("unavailableJson1-------------------------"+unavailableJson1);
+//
+////获取不符合的状态码
+//String unavailableCode = unavailableJson1.getString("unavailableCode").toString();
+//log.info("unavailableCode-------------------------"+unavailableCode);
+
+if(Integer.parseInt(reducePrice1) ==190 ){
+	log.info("组合1判断正确，开始断言组合2-------------------------");
+
+
+
+//---------------------------
+//获取promotionCodeAmountGroups数组，第2个数组
+JSONObject promotionCodeJson2 = promotionCodeList.getJSONObject(1);
+log.info("promotionCodeJson2-------------------------"+promotionCodeJson2);
+
+JSONArray availableList2 = promotionCodeJson2.getJSONArray("availablePromotionCodes");
+log.info("availableList2-------------------------"+availableList2);
+
+//get availableList len
+int len2 = availableList2.length();
+log.info("len2-------------------------"+len2);
+
+
+//---------------------------
+if (len2 == 1 ) {
+
+JSONObject availableJson2 = availableList2.getJSONObject(0);
+log.info("availableJson-------------------------"+availableJson2);
+
+//获取价格
+String reducePrice2 = availableJson2.getString("reducePrice").toString();
+log.info("reducePrice2-------------------------"+reducePrice2);
+
+
+//获取口令详情
+//String currency = availableJson.getJSONObject("promotionCodeDetail").getString("currency").toString();
+//log.info("currency-------------------------"+currency);
+
+
+
+		if (Integer.parseInt(reducePrice2) ==160  && Integer.parseInt(dataPrice) ==350  ){
+			log.info("price right : ");
+		}
+		else{
+			Failure = true;
+     		FailureMessage = "price wrong: ";
+}
+
+
+
+}else{
+	Failure = true;
+     FailureMessage = "组合2长度不正确";
+}
+
+
+
+}else{
+	Failure = true;
+     FailureMessage = "组合1没有正确判断口令不符合";
+}
+
+}else{
+
+	Failure = true;
+     FailureMessage = "状态吗不正确";
+}
+
+

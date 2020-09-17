@@ -1,0 +1,38 @@
+import java.io.IOException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import common.DBSUtil;
+import common.Row;
+import common.ProductSeqHashCode;
+import java.util.ArrayList;
+import java.util.List;
+
+//检查返回的字段，数据长度是否正确，字段值是否正确；
+
+String jsonContent = prev.getResponseDataAsString();
+JSONObject response = new JSONObject(jsonContent);
+String code = response.get("code").toString();
+
+JSONArray resourceList = response.getJSONObject("data").getJSONObject("template").getJSONArray("resource_list");
+//获取resource_list数组的长度
+int len = resourceList.length();
+String val1=resourceList.get(0).getString("resource_val");
+String val2=resourceList.get(1).getString("resource_val");
+
+log.info("val-------------------------"+val1+val2);
+log.info("len : "+len);
+
+if (code.equals("SUCCESS") && len==3  ) {
+	log.info("接口返回数据长度正确"+len);
+	if(val1.equals("zh-hans-cn") && val2.equals("en")){
+		log.info("成功了 : -----------");
+	}else{
+		Failure = true;
+        FailureMessage = "返回数据不正确";
+	}
+
+}else{
+	Failure = true;
+     FailureMessage = "接口返回数据长度不正确";
+}
