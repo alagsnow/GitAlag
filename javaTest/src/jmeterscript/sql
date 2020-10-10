@@ -1,6 +1,25 @@
 生成唯一ID
 "store_id":"${store_id}_${__time()}",
+----------------------------------
+/*
+timeShift
+搭配天、小时、分、秒对应的字母为 D\H\M\S
 
+当只需要变量天时，可以直接使用 2D、-3D、+1D等，也可以P2D。
+${__timeShift( yyyy-MM-dd HH:mm:ss ,P2D,)}
+${__timeShift( yyyy-MM-dd HH:mm:ss ,P-3D,)}
+${__timeShift( yyyy-MM-dd HH:mm:ss ,P+1D,)}
+
+当需要变量时分秒时，需要首字母PT。
+${__timeShift( yyyy-MM-dd HH:mm:ss ,PT-6H10M10S,)
+减少6小时，增加10分钟，增加10秒。
+
+当需要天和分秒一起使用时，需要 P天 T时分秒使用。
+${__timeShift( yyyy-MM-dd HH:mm:ss ,P2DT-6H10M10S,)}
+增加2天，减少6小时，增加10分钟，增加10秒。
+*/
+"end_time":${__timeShift(,,-PT20S,,)},
+-----------------------
 参数跨进程：
 beanshell后置处理器：
 ${__setProperty(reqactivitySeqShelve04,${activitySeqShelve04},)};
@@ -9,11 +28,18 @@ ${__setProperty(reqactivitySeqShelve04,${activitySeqShelve04},)};
 通过beanshell获取：
 String test ="${__property(reqstoreIdShelve02)}";
 
-vars.put 没有跨进程，想要跨进程，同样把字段放入beanshell处理器里面；
+String promotionSeq4 = "${__property(reqpromotioncreateSeqLock04)}";
+String promotionSeq5 = "${__property(reqpromotioncreateSeqLock05)}";
 
+vars.put 没有跨进程，想要跨进程，同样把字段放入beanshell处理器里面；
+-------------------------
 查询数据库相关
 1. 查询数据库中是否有重复字段
 SELECT COUNT(activity_seq)  from promotion_activity where app_id ="${app_id}"  group by activity_seq having COUNT(activity_seq) >1
+
+//jmeter处理从数据库获得的参数,beanshell处理
+String promotionCodeCount= vars.getObject("codeCount").get(0).get("COUNT(promotion_code)").toString();
+log.info("promotionCodeCount-----"+promotionCodeCount);
 
 2.查询时间段内数据总数：格式化显示时间
 select COUNT(promotion_code)  from promotion_code WHERE store_id ="${store_id}"  and app_id = "AurogonTest"

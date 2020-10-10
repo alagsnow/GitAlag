@@ -22,3 +22,8 @@ JSONObject request = new JSONObject(body);
 String storeId = request.getJSONObject("data").getString("store_id");
 log.info("storeId-------------------------"+storeId);
 vars.put("storeIdCreateP032",storeId);
+
+//获取请求sample的名字，等信息
+String name = sampler.getName(); // get parent sampler name
+String path = sampler.getUrl().getPath(); // get path
+String url = sampler.getUrl().getHost();  // get IP or hostname

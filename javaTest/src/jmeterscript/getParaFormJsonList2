@@ -21,6 +21,9 @@ log.info("promotionCodeList-------------------------"+promotionCodeList);
 String dataPrice = response.getJSONObject("data").getString("reducePrice").toString();
 log.info("dataPrice-------------------------"+dataPrice);
 
+//获取int数据
+int pageSize = response.getJSONObject("data").getInt("page_size");
+
 //获取promotionCodeAmountGroups数组，第一个数组
 JSONObject promotionCodeJson1 = promotionCodeList.getJSONObject(0);
 log.info("promotionCodeJson1-------------------------"+promotionCodeJson1);

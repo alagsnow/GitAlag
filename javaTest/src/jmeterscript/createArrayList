@@ -1,0 +1,5 @@
+//jmeter 中创建ArrayList
+
+list = new ArrayList();
+list.add(var1);
+log.info("var---------list----------------" + list.get(0));

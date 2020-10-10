@@ -1,0 +1,55 @@
+import java.io.IOException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import common.DBSUtil;
+import common.Row;
+import common.ProductSeqHashCode;
+import java.util.ArrayList;
+import java.util.List;
+
+//使用opt对数据返回做了判断null处理，返回null的时候，脚本不报错；
+
+String jsonContent = prev.getResponseDataAsString();
+JSONObject response = new JSONObject(jsonContent);
+String code = response.get("code").toString();
+
+
+if (code.equals("SUCCESS")) {
+
+            JSONArray promotionList = response.getJSONObject("data").optJSONArray("activity_promotion_list");
+            log.info("promotionList-------------------------" + promotionList);
+            if (promotionList != null) {
+                int len = promotionList.length();
+                log.info("len-------------------------" + len);
+
+                if (len == 1) {
+                    String val1 = promotionList.get(0).optString("activity_seq").toString();
+
+                    String actSeq1 = vars.get("activitySeqActivityList03");
+
+                    log.info("var-------------------------" + val1);
+                    log.info("actSeq-------------------------" + actSeq1);
+                    if (val1.equals(actSeq1)) {
+
+                    } else {
+                        Failure = true;
+                        FailureMessage = "返回的数据不正确，不等于全店商品的活动";
+                    }
+
+
+                } else {
+                    Failure = true;
+                    FailureMessage = "接口返回数据长度不正确";
+                }
+
+            } else {
+            	log.info("返回了null-------------------------" + len);
+                Failure = true;
+                FailureMessage = "接口返回数据长度为null";
+            }
+        }else {
+
+            Failure = true;
+            FailureMessage = "接口报错了，返回不是success";
+        }
